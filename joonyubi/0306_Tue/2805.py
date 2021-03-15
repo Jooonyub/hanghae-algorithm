@@ -24,34 +24,59 @@
 15'''
 
 #이분탐색으로 해보자..
+import sys
 import math
 import time
+#start_time = time.time()
+
+#n, m = map(int, input().split())    #n:나무의 수, m: 가져가고자 하는 나무의 길이
+n, m = map(int, sys.stdin.readline().rstrip().split())
+
+#trees = list(map(int, input().split()))
+trees = list(map(int, sys.stdin.readline().rstrip().split()))
+
+'''
+n,m = 4,7
+trees = [20,15,10,17]
+'''
 start_time = time.time()
 
-n, m = map(int, input().split())    #n:나무의 수, m: 가져가고자 하는 나무의 길이
+minimum = 0
+maximum = max(trees)
+bottom = 0
+top = max(trees)
+set_height = 0
 
-trees = list(map(int, input().split()))
 
-#totalget = sum(tree - set_height for tree in trees if tree>set_height)
 
-#set_height = (max(trees)+min(trees))//2
-
-sum = 0
 #while min(trees) <= set_height <= max(trees):
-while sum != m:
-    set_height = (max(trees)+min(trees))/2
+while minimum <= set_height < maximum:
+    set_height = (bottom + top)//2
+    goal = 0
+    difference = list(tree - set_height for tree in trees if tree > set_height)
+    goal = sum(difference)
     
+    '''
     for tree in trees:
         length = tree - set_height
         if length > 0:
             sum = sum + length
+    '''
     
-    #sum = sum(float(tree) - set_height for tree in trees if float(tree)>set_height)
-    if sum < m:
-        set_height = (min(trees) + set_height)/2
-    elif sum > m:
-        set_height = (max(trees) + set_height)/2
-set_height = math.trunc(set_height)
+    if goal < m: #원하는 만큼 길이의 목재를 얻지 못했을 때
+        if top == set_height:
+            break
+        top = set_height
+        #set_height = (bottom + set_height)/2
+    elif goal > m:    #과한 길이의 목재를 얻었을 때
+        if bottom == set_height:
+            break
+        bottom = set_height
+        #set_height = (top + set_height)/2
+    else:
+        break
+    
+#set_height
 print(set_height)
 
 end_time = time.time()
@@ -64,27 +89,3 @@ while sum <= m:
         if length > 0:
             sum = sum + length
 '''          
-
-
-
-
-'''
-n, m = map(int, input().split())    #n:나무의 수, m: 가져가고자 하는 나무의 길이
-
-trees = list(map(int, input().split()))
-
-max_h = max(trees)
-
-#print(n, m, trees, max_h)
-
-total_length = 0
-while total_length <= m:
-    for tree in trees:
-        length = tree - max_h
-        if length > 0:
-            total_length = total_length + length
-    max_h = max_h - 1
-
-print(max_h)
-#print(max_h, total_length)
-'''
